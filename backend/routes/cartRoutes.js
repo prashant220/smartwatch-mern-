@@ -14,7 +14,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
   }
 });
 
-// Add to cart
+/// Add to cart (absolute quantity-based)
 router.post('/add', verifyToken, async (req, res) => {
   const { userId, productId, quantity } = req.body;
   try {
@@ -23,17 +23,19 @@ router.post('/add', verifyToken, async (req, res) => {
 
     const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
     if (itemIndex > -1) {
-      cart.items[itemIndex].quantity += quantity;
+      cart.items[itemIndex].quantity = quantity; // ✅ Replace instead of +=
     } else {
       cart.items.push({ product: productId, quantity });
     }
 
     await cart.save();
-    res.json(cart);
+    const updatedCart = await Cart.findById(cart._id).populate('items.product'); // ✅ Ensure populated response
+    res.json(updatedCart);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // Remove from cart
 router.delete('/remove/:userId/:productId', verifyToken, async (req, res) => {

@@ -33,7 +33,7 @@ export default function Checkout() {
     if (user && token) fetchCart();
   }, [user, token]);
 
-  const getTotal = () => cart.items.reduce((total, item) => total + item.quantity * item.product.price, 0);
+  const getTotal = () => cart.items.reduce((total, item) => total + item.quantity * (item.product?.price || 0), 0);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,23 +47,27 @@ export default function Checkout() {
   };
 
   const handleQuantityChange = async (productId, delta) => {
-    const item = cart.items.find(item => item.product._id === productId);
+    const item = cart.items.find(item => item.product?._id === productId);
     if (!item) return;
+  
     const newQty = item.quantity + delta;
     if (newQty <= 0) return handleRemove(productId);
-
+  
     try {
       const res = await axios.post('http://localhost:5000/api/cart/add', {
+        userId: user._id,
         productId,
-        quantity: delta,
+        quantity: newQty  // 🔧 Send new total quantity instead of delta
       }, {
         headers: { 'x-auth-token': token }
       });
+  
       setCart(res.data);
     } catch (err) {
-      console.error('Quantity update error:', err);
+      console.error('Quantity update error:', err.response?.data || err.message);
     }
   };
+  
 
   const handleRemove = async (productId) => {
     try {
@@ -145,16 +149,16 @@ export default function Checkout() {
             {cart.items.map((item, idx) => (
               <div key={idx} className="d-flex justify-content-between align-items-center border-bottom py-2">
                 <div className="flex-grow-1">
-                  <strong>{item.product.name}</strong>
+                  <strong>{item.product?.name || 'Product Name'}</strong>
                   <div className="d-flex align-items-center gap-2 mt-1">
                     <Button size="sm" variant="outline-secondary" onClick={() => handleQuantityChange(item.product._id, -1)}>-</Button>
                     <span>{item.quantity}</span>
                     <Button size="sm" variant="outline-secondary" onClick={() => handleQuantityChange(item.product._id, 1)}>+</Button>
                   </div>
-                  <small className="text-muted">${item.product.price.toFixed(2)} each</small>
+                  <small className="text-muted">${(item.product?.price || 0).toFixed(2)} each</small>
                 </div>
                 <div className="text-end">
-                  <div>${(item.quantity * item.product.price).toFixed(2)}</div>
+                  <div>${(item.quantity * (item.product?.price || 0)).toFixed(2)}</div>
                   <Button size="sm" variant="danger" onClick={() => handleRemove(item.product._id)}>Remove</Button>
                 </div>
               </div>

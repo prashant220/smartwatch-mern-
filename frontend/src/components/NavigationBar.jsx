@@ -21,11 +21,11 @@ export default function NavigationBar() {
     }
   };
 
-  useEffect(() => {
-    if (user?._id) {
-      fetchCart(user._id);
-    }
-  }, [user, shouldRefresh]);
+  // useEffect(() => {
+  //   if (user?._id) {
+  //     fetchCart(user._id);
+  //   }
+  // }, [user, shouldRefresh]);
 
   useEffect(() => {
     const interval = setInterval(() => {

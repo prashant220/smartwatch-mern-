@@ -1,5 +1,5 @@
 // src/context/CartContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
 
@@ -8,6 +8,7 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const { user, token } = useAuth();
+  const hasFetchedCart = useRef(false);
 
   const fetchCart = async (userId) => {
     if (!userId || !token) return;
@@ -28,12 +29,13 @@ export function CartProvider({ children }) {
     }
     try {
       await axios.post('http://localhost:5000/api/cart/add', {
+        userId: user._id,
         productId: product._id,
         quantity: 1
       }, {
         headers: { 'x-auth-token': token }
       });
-      fetchCart(user._id);
+      fetchCart(user._id); // Manual refresh
     } catch (err) {
       console.error('Error adding to cart:', err);
     }
@@ -45,17 +47,19 @@ export function CartProvider({ children }) {
       await axios.delete(`http://localhost:5000/api/cart/remove/${user._id}/${productId}`, {
         headers: { 'x-auth-token': token }
       });
-      fetchCart(user._id);
+      fetchCart(user._id); // Manual refresh
     } catch (err) {
       console.error('Error removing from cart:', err);
     }
   };
 
+  // Only fetch cart ONCE when user/token become available
   useEffect(() => {
-    if (user?._id) {
+    if (user?._id && token && !hasFetchedCart.current) {
       fetchCart(user._id);
+      hasFetchedCart.current = true;
     }
-  }, [user]);
+  }, [user?._id, token]);
 
   return (
     <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, fetchCart }}>
