@@ -17,3 +17,13 @@ exports.getProductById = async (req, res) => {
     res.status(404).json({ error: 'Product not found' });
   }
 };
+
+//related products
+exports.getRelatedProducts = async (req, res) => {
+  try {
+    const related = await Product.find().limit(3); 
+    res.json(related);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

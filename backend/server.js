@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
-// ✅ Added auth and cart routes
+// Added auth and cart routes
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 app.use('/api/auth', authRoutes);

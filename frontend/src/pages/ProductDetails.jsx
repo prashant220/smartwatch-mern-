@@ -7,6 +7,7 @@ import NavigationBar from "../components/NavigationBar";
 import Newsletter from "../components/Newsletter";
 import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
+import RelatedProducts from "../components/RelatedProducts";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -135,7 +136,7 @@ export default function ProductDetails() {
           </Row>
         </Container>
       </section>
-
+      <RelatedProducts/>
       <Testimonials />
       <Newsletter />
       <Footer />
