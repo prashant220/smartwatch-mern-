@@ -1,0 +1,75 @@
+/* ProductCard.css */
+
+.product-card {
+    width: 100%;
+    max-width: 260px;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    margin-bottom: 2.5rem;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-image-wrapper {
+    position: relative;
+    padding: 1rem;
+    background: #fff;
+  }
+  
+  .product-image {
+    height: 180px;
+    object-fit: contain;
+    width: 100%;
+  }
+  
+  .badge-new {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #007bff;
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+  
+  .option-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .circle-option {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #999;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .circle-option.black {
+    background-color: #000;
+  }
+  
+  .circle-option.grey {
+    background-color: #ccc;
+  }
+  
+  .circle-option:hover {
+    transform: scale(1.2);
+    border-color: #333;
+  }
+  
+  /* Ensure spacing between rows */
+  .product-section-row {
+    row-gap: 3rem !important;
+    justify-content: start !important;
+  }
