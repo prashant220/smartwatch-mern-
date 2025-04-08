@@ -8,6 +8,7 @@ import Login from './pages/Auth/Login';
 import Cart from './pages/Cart.jsx';
 import NavigationBar from './components/NavigationBar.jsx';
 import Checkout from './pages/Checkout.jsx';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function App() {
   return (

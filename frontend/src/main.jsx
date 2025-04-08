@@ -6,6 +6,8 @@ import '@fontsource/poppins';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css';
 import { AuthProvider } from './context/AuthContext.jsx';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

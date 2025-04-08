@@ -3,39 +3,27 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import { useCart } from '../context/CartContext';
 import './ProductCard.css';
 
 export default function ProductCard({ product }) {
   const { user, token } = useAuth();
-
+  const{addToCart}=useCart();
   const handleAddToCart = async () => {
     if (!user || !token) {
       alert('Please log in to add items to your cart.');
       return;
     }
-
+  
     try {
-      const config = {
-        headers: {
-          'x-auth-token': token,
-          'Content-Type': 'application/json'
-        }
-      };
-
-      const payload = {
-        userId: user._id,
-        productId: product._id,
-        quantity: 1
-      };
-
-      await axios.post('http://localhost:5000/api/cart/add', payload, config);
+      await addToCart(product); // ✅ pass product here
       alert('Product added to cart!');
     } catch (err) {
-      console.error('Add to cart error:', err.response?.data || err.message);
-      alert('Failed to add to cart.');
+      console.error('Add to cart error:', err);
+      alert('Failed to add product to cart.');
     }
   };
+  
 
   return (
     <Card className="product-card border-0 p-2" style={{ borderRadius: '12px' }}>

@@ -1,17 +1,24 @@
 // src/components/NavigationBar.jsx
-import { Navbar, Nav, Container, Badge, Dropdown, Image } from 'react-bootstrap';
+import { Navbar, Nav, Container, Badge, Dropdown, Image, NavDropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useEffect, useRef, useState } from 'react';
 
 export default function NavigationBar() {
-  const { user, logout } = useAuth();
+  const { user, logout,token } = useAuth();
   const { cartItems, fetchCart } = useCart();
   const navigate = useNavigate();
   const badgeRef = useRef();
   const [shouldRefresh, setShouldRefresh] = useState(false);
-
+  useEffect(() => {
+    if (token) {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+       window.location.reload() 
+      }
+    }
+  }, [token]);
   const handleCartClick = () => {
     if (!user) {
       alert('Please log in to view your cart.');
@@ -21,17 +28,10 @@ export default function NavigationBar() {
     }
   };
 
-  // useEffect(() => {
-  //   if (user?._id) {
-  //     fetchCart(user._id);
-  //   }
-  // }, [user, shouldRefresh]);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setShouldRefresh(prev => !prev);
-    }, 2000); // Polling every 2 seconds
-
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -53,23 +53,30 @@ export default function NavigationBar() {
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg" className="border-bottom py-3 shadow-sm">
       <Container>
-        <Navbar.Brand as={Link} to="/">Smartwear</Navbar.Brand>
+        {/* Left: Logo */}
+        <Navbar.Brand as={Link} to="/" className="fw-bold text-white fs-4">Smartwear</Navbar.Brand>
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/products">Products</Nav.Link>
+          {/* Middle: Links */}
+          <Nav className="mx-auto">
+            <Nav.Link as={Link} to="/" className="text-white fw-semibold">Home</Nav.Link>
+            <Nav.Link as={Link} to="/products" className="text-white fw-semibold">Products</Nav.Link>
+            <Nav.Link className="text-white fw-semibold">Contact</Nav.Link>
+            <Nav.Link className="text-white fw-semibold">Support</Nav.Link>
+          </Nav>
 
+          {/* Right: Auth & Cart */}
+          <Nav className="align-items-center gap-3">
             <Dropdown align="end">
-              <Dropdown.Toggle variant="dark" id="dropdown-cart" style={{ position: 'relative' }}>
-                Cart{' '}
-                <Badge ref={badgeRef} bg="warning" text="dark" pill style={{ position: 'absolute', top: 2, right: -10 }}>
+              <Dropdown.Toggle variant="dark" id="dropdown-cart" className="position-relative">
+                <i className="bi bi-cart3 fs-5 text-white"></i>
+                <Badge ref={badgeRef} bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                   {totalItems}
                 </Badge>
               </Dropdown.Toggle>
-
               <Dropdown.Menu style={{ minWidth: '300px' }}>
                 {cartItems.length === 0 ? (
                   <Dropdown.Item disabled>Your cart is empty</Dropdown.Item>
@@ -97,14 +104,15 @@ export default function NavigationBar() {
             </Dropdown>
 
             {user ? (
-              <>
-                <Nav.Link disabled>Welcome, {user.name.split(' ')[0]}</Nav.Link>
-                <Nav.Link onClick={logout}>Logout</Nav.Link>
-              </>
+              <NavDropdown title={<i className="bi bi-person-circle fs-5 text-white"></i>} id="user-nav" align="end">
+                <NavDropdown.Item disabled>Welcome, {user.name.split(' ')[0]}</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+              </NavDropdown>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                <Nav.Link as={Link} to="/login" className="text-white fw-semibold">Sign In</Nav.Link>
+                <Nav.Link as={Link} to="/register" className="btn btn-danger px-3 py-1 text-white rounded-pill">Sign Up</Nav.Link>
               </>
             )}
           </Nav>
