@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext'; 
+import NavigationBar from "../components/NavigationBar";
 
 export default function Cart() {
   const { user, token } = useAuth();
@@ -63,7 +64,9 @@ export default function Cart() {
   };
 
   return (
-    <Container className="py-4">
+    <>
+    <NavigationBar/>
+     <Container className="py-4">
       <h3 className="mb-4 fw-bold">Your Basket</h3>
       <Row>
         <Col md={8}>
@@ -148,5 +151,8 @@ export default function Cart() {
         </Col>
       </Row>
     </Container>
+    
+    </>
+   
   );
 }

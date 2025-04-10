@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import NavigationBar from '../components/NavigationBar';
 
 export default function Checkout() {
   const { user, token } = useAuth();
@@ -97,7 +98,9 @@ export default function Checkout() {
   };
 
   return (
-    <Container className="py-5">
+    <>
+    <NavigationBar/>
+     <Container className="py-5">
       <h2 className="mb-4 text-center">Checkout</h2>
       <Row>
         <Col md={7}>
@@ -188,5 +191,7 @@ export default function Checkout() {
         </Col>
       </Row>
     </Container>
+    </>
+   
   );
 }

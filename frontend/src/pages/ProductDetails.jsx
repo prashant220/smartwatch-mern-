@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import RelatedProducts from "../components/RelatedProducts";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import NavigationBar from "../components/NavigationBar";
 
 export default function ProductDetails({ product }) {
   const { id } = useParams();
@@ -67,6 +68,7 @@ export default function ProductDetails({ product }) {
 
   return (
     <>
+    <NavigationBar/>
       <section className="py-5 bg-light">
         <Container>
           <Row>

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import NavigationBar from '../../components/NavigationBar';
+import Footer from '../../components/Footer';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -25,7 +27,9 @@ export default function Login() {
   };
 
   return (
-    <Container className="py-5" style={{ maxWidth: '500px' }}>
+    <>
+    <NavigationBar/>
+     <Container className="py-5" style={{ maxWidth: '500px' }}>
       <h3 className="mb-4">Login</h3>
       {error && <Alert variant="danger">{error}</Alert>}
       <Form onSubmit={handleSubmit}>
@@ -40,5 +44,7 @@ export default function Login() {
         <Button type="submit" variant="dark" className="w-100">Login</Button>
       </Form>
     </Container>
+    </>
+   
   );
 }
