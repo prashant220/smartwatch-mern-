@@ -27,10 +27,11 @@ app.use('/api/cart', cartRoutes);
 
 // Register catch-all error handler
 app.use((err, req, res, next) => {
-  console.error('🔴 Server Error:', err);
+  console.error(' Server Error:', err);
   res.status(500).json({ message: 'Server error', error: err.message });
 });
-
+const contactRoutes = require('./routes/contactRoutes');
+app.use('/api/contact', contactRoutes);
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))

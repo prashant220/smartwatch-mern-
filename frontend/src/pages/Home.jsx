@@ -1,7 +1,6 @@
 // src/pages/HomePage.jsx
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import './Home.css';
-import NavigationBar from '../components/NavigationBar';
 import ProductSection from '../components/ProductSection';
 import '@fontsource/poppins';
 import promoWatch from '../images/pic-1.jpg';
@@ -11,10 +10,17 @@ import RelatedProducts from '../components/RelatedProducts';
 import Footer from '../components/Footer';
 import Features from '../components/Features';
 import GallerySection from '../components/Gallery';
+import { useRef } from 'react';
+import NavigationBar from '../components/NavigationBar';
 
 export default function HomePage() {
+  const productRef = useRef(null);
+  const scrollToProducts = () => {
+    productRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
   return (
     <div>
+      <NavigationBar onProductsClick={scrollToProducts} />
       <div className="hero-section">
 
         <Container>
@@ -55,7 +61,9 @@ export default function HomePage() {
         </Container>
       </div>
 
-      <ProductSection />
+      <div ref={productRef}>
+        <ProductSection />
+      </div>
       <Features/>
       <GallerySection/>
       <Testimonials />

@@ -9,7 +9,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 
 
 
-export default function NavigationBar() {
+export default function NavigationBar({onProductsClick }) {
   const { user, logout,token } = useAuth();
   const { cartItems, fetchCart } = useCart();
   const navigate = useNavigate();
@@ -67,8 +67,8 @@ export default function NavigationBar() {
        
           <Nav className="mx-auto">
             <Nav.Link as={Link} to="/" className="text-white fw-semibold">Home</Nav.Link>
-            <Nav.Link as={Link} to="/products" className="text-white fw-semibold">Products</Nav.Link>
-            <Nav.Link className="text-white fw-semibold">Contact</Nav.Link>
+            <Nav.Link as={Link} onClick={onProductsClick}  className="text-white fw-semibold">Products</Nav.Link>
+            <Nav.Link as={Link} className="text-white fw-semibold" to="/contact">Contact</Nav.Link>
             <Nav.Link className="text-white fw-semibold">Support</Nav.Link>
           </Nav>
 

@@ -6,15 +6,16 @@ import './App.css'
 import Register from './pages/Auth/Register.jsx';
 import Login from './pages/Auth/Login';
 import Cart from './pages/Cart.jsx';
-import NavigationBar from './components/NavigationBar.jsx';
 import Checkout from './pages/Checkout.jsx';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import OrderSuccess from './pages/OrderSuccess.jsx';
+import { useRef } from 'react';
+import Contact from './pages/Contact.jsx';
 
 function App() {
+ 
   return (
     <Router>
-      <NavigationBar/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
@@ -23,6 +24,8 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/cart" element={<Cart/>} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/contact" element={<Contact />} />
+
       </Routes>
     </Router>
   );
