@@ -60,9 +60,9 @@ const sampleProducts = [
 
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
-    await Product.deleteMany(); // Clear existing products
+    await Product.deleteMany(); 
     await Product.insertMany(sampleProducts);
     console.log("✅ Sample products inserted!");
     mongoose.disconnect();
   })
-  .catch(err => console.error("❌ Seed error:", err));
+  .catch(err => console.error(" Seed error:", err));

@@ -14,7 +14,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
   }
 });
 
-/// Add to cart (absolute quantity-based)
+// Add to cart 
 router.post('/add', verifyToken, async (req, res) => {
   const { userId, productId, quantity } = req.body;
   try {
@@ -23,19 +23,18 @@ router.post('/add', verifyToken, async (req, res) => {
 
     const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
     if (itemIndex > -1) {
-      cart.items[itemIndex].quantity = quantity; // ✅ Replace instead of +=
+      cart.items[itemIndex].quantity = quantity; 
     } else {
       cart.items.push({ product: productId, quantity });
     }
 
     await cart.save();
-    const updatedCart = await Cart.findById(cart._id).populate('items.product'); // ✅ Ensure populated response
+    const updatedCart = await Cart.findById(cart._id).populate('items.product');
     res.json(updatedCart);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 // Remove from cart
 router.delete('/remove/:userId/:productId', verifyToken, async (req, res) => {
@@ -43,7 +42,21 @@ router.delete('/remove/:userId/:productId', verifyToken, async (req, res) => {
     const cart = await Cart.findOne({ user: req.params.userId });
     cart.items = cart.items.filter(item => item.product.toString() !== req.params.productId);
     await cart.save();
-    res.json(cart);
+    const updatedCart = await Cart.findById(cart._id).populate('items.product');
+    res.json(updatedCart);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// Clear entire cart
+router.delete('/clear/:userId', verifyToken, async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ user: req.params.userId });
+    if (cart) {
+      cart.items = [];
+      await cart.save();
+    }
+    res.json({ message: 'Cart cleared successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

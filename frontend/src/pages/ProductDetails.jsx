@@ -1,5 +1,5 @@
 // src/pages/ProductDetails.jsx
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Row, Col, Button, Spinner, Badge } from "react-bootstrap";
@@ -10,29 +10,35 @@ import RelatedProducts from "../components/RelatedProducts";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 
-export default function ProductDetails({product}) {
+export default function ProductDetails({ product }) {
   const { id } = useParams();
-    const { user, token } = useAuth();
-  const{addToCart}=useCart();
+  const { user, token } = useAuth();
+  const { addToCart, cartItems } = useCart();
   const [products, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
-console.log(products)
+  const navigate = useNavigate();
   const handleAddToCart = async () => {
     if (!user || !token) {
-      alert('Please log in to add items to your cart.');
+      alert("Please log in to add items to your cart.");
       return;
     }
-  
+
     try {
-      await addToCart(products); // ✅ pass product here
-      alert('Product added to cart!');
+      // Check if already in cart
+      const existingItem = cartItems.find(
+        (item) => item.product._id === products._id
+      );
+      const newQuantity = existingItem ? existingItem.quantity + 1 : 1;
+
+      await addToCart(products, newQuantity);
+      alert("Product added to cart!");
     } catch (err) {
-      console.error('Add to cart error:', err);
-      alert('Failed to add product to cart.');
+      console.error("Add to cart error:", err);
+      alert("Failed to add product to cart.");
     }
   };
-  
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/products/${id}`)
@@ -108,58 +114,28 @@ console.log(products)
               </div>
 
               <div className="mb-3">
-                <h6 className="fw-semibold">Color:</h6>
-                <div className="d-flex gap-2">
-                  <Button
-                    variant="outline-dark"
-                    size="sm"
-                    className="rounded-circle p-2"
-                    style={{ backgroundColor: "#000" }}
-                  ></Button>
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    className="rounded-circle p-2"
-                    style={{ backgroundColor: "#eee" }}
-                  ></Button>
-                </div>
-              </div>
-
-              <div className="mb-3">
                 <h6 className="fw-semibold">Size:</h6>
-                <div className="d-flex gap-2">
-                  <Button variant="outline-dark" size="sm">
-                    42mm
-                  </Button>
-                  <Button variant="outline-dark" size="sm">
-                    44mm
-                  </Button>
-                </div>
               </div>
 
               <p className="mt-4 text-muted">{products.description}</p>
 
               <div className="d-grid gap-2 mt-3">
-                <Button 
+                <Button
                   onClick={(e) => {
                     e.preventDefault();
                     handleAddToCart();
                   }}
-                variant="dark" className="px-4 py-2 rounded-pill">
-                  Add to Cart
-                </Button>
-                <Button
-                  variant="outline-primary"
+                  variant="dark"
                   className="px-4 py-2 rounded-pill"
                 >
-                  Buy Now
+                  Add to Cart
                 </Button>
               </div>
             </Col>
           </Row>
         </Container>
       </section>
-      <RelatedProducts/>
+      <RelatedProducts />
       <Testimonials />
       <Newsletter />
       <Footer />

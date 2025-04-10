@@ -4,6 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useEffect, useRef, useState } from 'react';
+import { FaUserCircle } from 'react-icons/fa'; 
+import { FaShoppingCart } from 'react-icons/fa';
+
+
 
 export default function NavigationBar() {
   const { user, logout,token } = useAuth();
@@ -55,12 +59,12 @@ export default function NavigationBar() {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="border-bottom py-3 shadow-sm">
       <Container>
-        {/* Left: Logo */}
+     
         <Navbar.Brand as={Link} to="/" className="fw-bold text-white fs-4">Smartwear</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {/* Middle: Links */}
+       
           <Nav className="mx-auto">
             <Nav.Link as={Link} to="/" className="text-white fw-semibold">Home</Nav.Link>
             <Nav.Link as={Link} to="/products" className="text-white fw-semibold">Products</Nav.Link>
@@ -68,11 +72,11 @@ export default function NavigationBar() {
             <Nav.Link className="text-white fw-semibold">Support</Nav.Link>
           </Nav>
 
-          {/* Right: Auth & Cart */}
+          
           <Nav className="align-items-center gap-3">
             <Dropdown align="end">
               <Dropdown.Toggle variant="dark" id="dropdown-cart" className="position-relative">
-                <i className="bi bi-cart3 fs-5 text-white"></i>
+              <FaShoppingCart className="fs-5 text-white" />
                 <Badge ref={badgeRef} bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                   {totalItems}
                 </Badge>
@@ -104,7 +108,7 @@ export default function NavigationBar() {
             </Dropdown>
 
             {user ? (
-              <NavDropdown title={<i className="bi bi-person-circle fs-5 text-white"></i>} id="user-nav" align="end">
+              <NavDropdown title={<FaUserCircle className="text-white fs-4" />} id="user-nav" align="end">
                 <NavDropdown.Item disabled>Welcome, {user.name.split(' ')[0]}</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>

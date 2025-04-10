@@ -8,7 +8,7 @@ import './ProductCard.css';
 
 export default function ProductCard({ product }) {
   const { user, token } = useAuth();
-  const{addToCart}=useCart();
+  const{addToCart,cartItems}=useCart();
   const handleAddToCart = async () => {
     if (!user || !token) {
       alert('Please log in to add items to your cart.');
@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
     }
   
     try {
-      await addToCart(product); // ✅ pass product here
+      await addToCart(product); 
       alert('Product added to cart!');
     } catch (err) {
       console.error('Add to cart error:', err);

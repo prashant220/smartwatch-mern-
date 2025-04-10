@@ -9,6 +9,7 @@ import Cart from './pages/Cart.jsx';
 import NavigationBar from './components/NavigationBar.jsx';
 import Checkout from './pages/Checkout.jsx';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import OrderSuccess from './pages/OrderSuccess.jsx';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cart" element={<Cart/>} />
       <Route path="/checkout" element={<Checkout />} />

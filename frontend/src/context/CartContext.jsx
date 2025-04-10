@@ -22,24 +22,27 @@ export function CartProvider({ children }) {
     }
   };
 
-  const addToCart = async (product) => {
+  const addToCart = async (product, quantity = 1) => {
     if (!user || !token) {
       alert('Please log in to add items to your cart.');
       return;
     }
+  
     try {
       await axios.post('http://localhost:5000/api/cart/add', {
         userId: user._id,
         productId: product._id,
-        quantity: 1
+        quantity: quantity 
       }, {
         headers: { 'x-auth-token': token }
       });
-      fetchCart(user._id); // Manual refresh
+  
+      fetchCart(user._id); // Refresh cart after adding
     } catch (err) {
       console.error('Error adding to cart:', err);
     }
   };
+  
 
   const removeFromCart = async (productId) => {
     if (!user || !token) return;

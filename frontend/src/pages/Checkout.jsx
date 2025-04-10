@@ -39,13 +39,29 @@ export default function Checkout() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Order submitted:', { form, cart });
-    alert('Order submitted successfully!');
-    navigate('/');
+  
+    try {
+      const shippingInfo = form;
+      const total = getTotal();
+  
+      await axios.post('http://localhost:5000/api/orders/place', {
+        shippingInfo,
+        total
+      }, {
+        headers: { 'x-auth-token': token }
+      });
+  
+      alert('Order submitted successfully!');
+      navigate('/order-success');
+    } catch (err) {
+      console.error('Order error:', err);
+      alert('Failed to place order.');
+    }
   };
-
+  
+  
   const handleQuantityChange = async (productId, delta) => {
     const item = cart.items.find(item => item.product?._id === productId);
     if (!item) return;
