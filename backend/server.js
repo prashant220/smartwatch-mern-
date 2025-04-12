@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-
+const path = require('path');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -12,7 +12,11 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Smartwatch Backend is running!');
 });
-
+//dashboard
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/api/admin', adminRoutes);
+//image
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 

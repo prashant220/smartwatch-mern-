@@ -11,6 +11,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import OrderSuccess from './pages/OrderSuccess.jsx';
 import { useRef } from 'react';
 import Contact from './pages/Contact.jsx';
+import AdminDashboard from './pages/AdminDasboard.jsx';
 
 function App() {
  
@@ -25,6 +26,7 @@ function App() {
       <Route path="/cart" element={<Cart/>} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/admin" element={<AdminDashboard />} /> 
 
       </Routes>
     </Router>

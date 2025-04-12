@@ -23,7 +23,7 @@ export default function ProductCard({ product }) {
       alert('Failed to add product to cart.');
     }
   };
-  
+  console.log(product)
 
   return (
     <Card className="product-card border-0 p-2" style={{ borderRadius: '12px' }}>
@@ -31,10 +31,10 @@ export default function ProductCard({ product }) {
         <div className="overflow-hidden rounded">
           <Card.Img
             variant="top"
-            src={product.image}
+            src={`http://localhost:5000/${product.image}`}
             alt={product.name}
             className="w-100"
-            style={{ height: '320px', objectFit: 'contain' }}
+            style={{ height: '320px', objectFit: 'cover' }}
           />
         </div>
         <Card.Body>

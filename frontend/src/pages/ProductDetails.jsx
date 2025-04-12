@@ -68,75 +68,82 @@ export default function ProductDetails({ product }) {
 
   return (
     <>
-    <NavigationBar/>
+      <NavigationBar />
       <section className="py-5 bg-light">
         <Container>
-          <Row>
-            {/* Left thumbnails */}
-            <Col
-              md={1}
-              className="d-none d-md-flex flex-column gap-2 align-items-center"
-            >
+          <Row className="g-5 align-items-start">
+            {/* Thumbnails */}
+            <Col md={1} className="d-none d-md-flex flex-column gap-3">
               {[...Array(4)].map((_, i) => (
                 <img
                   key={i}
-                  src={products.image}
-                  alt="thumb"
-                  className={`img-thumbnail border-0 shadow-sm ${
-                    selectedImage === products.image ? "border border-dark" : ""
+                  src={`http://localhost:5000/${products.image}`}
+                  alt={`thumb-${i}`}
+                  className={`img-thumbnail p-1 rounded shadow-sm ${
+                    selectedImage === `http://localhost:5000/${products.image}` ? "border border-dark" : ""
                   }`}
-                  style={{ width: 50, cursor: "pointer" }}
-                  onClick={() => setSelectedImage(products.image)}
+                  style={{ width: 55, height: 55, cursor: "pointer", objectFit: "cover" }}
+                  onClick={() => setSelectedImage(`http://localhost:5000/${products.image}`)}
                 />
               ))}
             </Col>
-
+  
             {/* Main image */}
             <Col md={5} className="text-center">
               <img
-                src={selectedImage}
+                src={`http://localhost:5000/${products.image}`}
                 alt={products.name}
-                className="img-fluid rounded shadow"
-                style={{ maxHeight: 480, objectFit: "contain" }}
+                className="img-fluid rounded shadow-sm"
+                style={{ maxHeight: 500, objectFit: "contain", borderRadius: "10px" }}
               />
             </Col>
-
-            {/* Product details */}
+  
+            {/* Details */}
             <Col md={6}>
-              <h4 className="fw-bold mb-2">{products.name}</h4>
-              <Badge bg="warning" text="dark" className="mb-3">
+              <h2 className="fw-bold mb-3 text-dark">{products.name}</h2>
+              <Badge bg="warning" text="dark" className="mb-3 px-3 py-1 rounded-pill">
                 Customizable
               </Badge>
-
+  
               <div className="mb-3">
-                <h3 className="text-dark fw-bold">${products.price}</h3>
-                <small className="text-muted">
-                  (Discount for bulk orders available)
-                </small>
+                <h3 className="fw-bold text-success">${products.price}</h3>
+                <small className="text-muted">(Discount for bulk orders available)</small>
               </div>
-
+  
               <div className="mb-3">
-                <h6 className="fw-semibold">Size:</h6>
+                <h6 className="fw-semibold mb-1">Size:</h6>
+                <div className="d-flex gap-2">
+                  <Button variant="outline-secondary" size="sm">42mm</Button>
+                  <Button variant="outline-secondary" size="sm">44mm</Button>
+                </div>
               </div>
-
-              <p className="mt-4 text-muted">{products.description}</p>
-
-              <div className="d-grid gap-2 mt-3">
+  
+              <p className="mt-4 text-muted" style={{ lineHeight: 1.6 }}>{products.description}</p>
+  
+              <div className="d-grid gap-2 mt-4">
                 <Button
                   onClick={(e) => {
                     e.preventDefault();
                     handleAddToCart();
                   }}
                   variant="dark"
-                  className="px-4 py-2 rounded-pill"
+                  className="px-4 py-2 rounded-pill fw-semibold"
                 >
                   Add to Cart
+                </Button>
+                <Button
+                  onClick={() => navigate("/checkout")}
+                  variant="outline-primary"
+                  className="px-4 py-2 rounded-pill fw-semibold"
+                >
+                  Buy Now
                 </Button>
               </div>
             </Col>
           </Row>
         </Container>
       </section>
+  
       <RelatedProducts />
       <Testimonials />
       <Newsletter />
