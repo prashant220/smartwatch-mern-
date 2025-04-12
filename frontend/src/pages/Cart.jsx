@@ -64,6 +64,7 @@ export default function Cart() {
   };
 
   return (
+    cart?
     <>
     <NavigationBar/>
      <Container className="py-4">
@@ -73,7 +74,7 @@ export default function Cart() {
           {cart.items.map((item) => (
             <Card key={item.product._id} className="mb-4 shadow-sm border-0">
               <Card.Body className="d-flex align-items-start">
-                <img src={item.product.image} alt={item.product.name} style={{ width: '120px', height: 'auto' }} className="me-3 rounded" />
+                <img src={`http://localhost:5000/${item.product.image}`} alt={item.product.name} style={{ width: '120px', height: 'auto' }} className="me-3 rounded" />
                 <div className="flex-grow-1">
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
@@ -152,7 +153,10 @@ export default function Cart() {
       </Row>
     </Container>
     
+    </>:
+    <>
     </>
+  
    
   );
 }

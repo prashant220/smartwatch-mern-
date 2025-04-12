@@ -69,7 +69,6 @@ export default function NavigationBar({onProductsClick }) {
             <Nav.Link as={Link} to="/" className="text-white fw-semibold">Home</Nav.Link>
             <Nav.Link as={Link} onClick={onProductsClick}  className="text-white fw-semibold">Products</Nav.Link>
             <Nav.Link as={Link} className="text-white fw-semibold" to="/contact">Contact</Nav.Link>
-            <Nav.Link className="text-white fw-semibold">Support</Nav.Link>
           </Nav>
 
           
